@@ -1,10 +1,13 @@
+// neram:- a light weight time manipulation library
+// version:1.0.0
+// authon:பாலாஜி(sch00lb0y)
+// made with அன்பு love
 package neram
 import("time"
        "helper"
        "strings"
        "errors"
        "strconv"
-       //"fmt"
     )
 type Neram struct {
   Time time.Time
@@ -16,17 +19,35 @@ type Neram struct {
   Year int
 }
 var formats=[5]string{"HHHH","MMMM","YYYY","YY","MM"}
+// Month Array
 var Month=[12]string{"January","February","March","April","May","June","July","August","September","October","November","December"}
-var Manipulator=[4]string{"days","hours","s","s"}
+
+/*
+@params Time object
+returns Neram object
+*/
 func New(Time time.Time)(*Neram)  {
   Year,Month,Day:=Time.Date()
   Hours,Minutes,Seconds:=Time.Clock()
   return &Neram{Time,Hours,Minutes,Seconds,Day,Month.String(),Year}
 }
+/*
+creates Neram object for the current time
+*/
 func Now()(*Neram)  {
 return New(time.Now())
 }
-
+/*
+@params format string
+supported format
+HHHH : Hours
+MMMM :Month
+YYYYY :Year
+YY: year (only last two digit)
+MM: Month ( gives month in numbers)
+returns string based on the format
+refer helper package for to know about Indexof func
+*/
 func (neram *Neram)Format(format string)(string,error) {
    splitedformat:=strings.Split(format," ")
    for i := 0;i <len(splitedformat);i++ {
@@ -55,30 +76,34 @@ func (neram *Neram)Format(format string)(string,error) {
 return result,nil
 }
 
+// returns day
 func (neram *Neram)GetDay()int  {
 return neram.Day
 }
-
+// returns Hours
 func (neram *Neram)GetHours()int  {
 return neram.Hours
 }
-
+//returns Seconds
 func (neram *Neram)GetSeconds()int  {
 return neram.Seconds
 }
-
+// return Minutes
 func (neram *Neram)GetMinutes()int  {
 return neram.Minutes
 }
-
+//returns Month
 func (neram *Neram)GetMonth()string  {
 return neram.Month
 }
-
+// returns Year
 func (neram *Neram)GetYear()int  {
 return neram.Year
 }
-
+/*@params n integer that you want to add
+ *@params manipulator string (Days Months Years Seconds Minutes Hours)
+ *
+ */
 func (neram *Neram)Add(n int,manipulator string)(*Neram,error)  {
   var NewObject Neram
   switch manipulator {
@@ -113,6 +138,14 @@ func (neram *Neram)StartOf(manipulator string)(*Neram,error)  {
   switch manipulator {
   case "Year":
               NewObject=New(time.Date(neram.Year,time.Month(1),1,0,0,0,0,neram.Time.Location()))
+  case "Month":
+              NewObject=New(time.Date(neram.Year,time.Month(helper.Indexof(Month,neram.Month)+1),1,0,0,0,0,neram.Time.Location()))
+  case "Day":
+              NewObject=New(time.Date(neram.Year,time.Month(helper.Indexof(Month,neram.Month)+1),neram.Day,0,0,0,0,neram.Time.Location()))
+  case "Hour":
+              NewObject=New(time.Date(neram.Year,time.Month(helper.Indexof(Month,neram.Month)+1),neram.Day,neram.Hours,0,0,0,neram.Time.Location()))
+  case "Minute":
+              NewObject=New(time.Date(neram.Year,time.Month(helper.Indexof(Month,neram.Month)+1),neram.Day,neram.Hours,neram.Minutes,0,0,neram.Time.Location()))
   }
   return NewObject,nil
 }
