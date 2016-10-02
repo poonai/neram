@@ -102,7 +102,7 @@ return neram.Year
 }
 /*@params n integer that you want to add
  *@params manipulator string (Days Months Years Seconds Minutes Hours)
- *
+ * returns added Neram object
  */
 func (neram *Neram)Add(n int,manipulator string)(*Neram,error)  {
   var NewObject Neram
@@ -128,10 +128,17 @@ func (neram *Neram)Add(n int,manipulator string)(*Neram,error)  {
   NewObject.Month=string(Month)
   return &NewObject,nil
 }
+/*
+same as add func but it decrements
+*/
 
 func (neram *Neram)Sub(n int,manipulator string)(*Neram,error)  {
   return neram.Add(-n,manipulator)
 }
+/*
+StartOf func makes the Neram object to move to start of the manipulator string
+that mentioned
+*/
 
 func (neram *Neram)StartOf(manipulator string)(*Neram,error)  {
   NewObject:=new(Neram)
