@@ -51,8 +51,12 @@ refer helper package for to know about Indexof func
 func (neram *Neram)Format(format string)(string,error) {
    splitedformat:=strings.Split(format," ")
    for i := 0;i <len(splitedformat);i++ {
+
         if helper.Indexof(formats,splitedformat[i]) < 0{
-          return "",errors.New("invalid format")
+
+                if splitedformat[i][0]!=91&&splitedformat[i][len(splitedformat[i])-1]!=93{
+                     return "",errors.New("invalid format")
+                    }
         }
    }
    var result string =""
@@ -71,9 +75,11 @@ func (neram *Neram)Format(format string)(string,error) {
      case "MM":
                month:=helper.Indexof(Month,neram.Month)+1
                result=result+strconv.Itoa(month)+" "
+     default:
+                result=result+splitedformat[i][1:len(splitedformat[i])-1]+" "
      }
    }
-return result,nil
+return result[0:len(result)-1],nil
 }
 
 // returns day
