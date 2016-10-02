@@ -14,8 +14,7 @@ go get github.com/sch00lb0y/neram
  fmt.Print(demo.Format("YYYY"))  //prints the year in four digit
  }
  ```
- # API
- # Time Parser
+# API
  ```go
   package main
  import "github.com/sch00lb0y/neram"
